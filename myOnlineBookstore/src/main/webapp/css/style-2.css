@@ -1181,7 +1181,6 @@ section{
    border:var(--border2);
    width: 100%;
    border-radius: .5rem;
-   width: 100%;
    background-color: var(--white);
    padding:1.2rem 1.4rem;
    font-size: 1.8rem;

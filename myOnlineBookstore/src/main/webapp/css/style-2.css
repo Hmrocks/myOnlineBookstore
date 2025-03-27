@@ -1231,7 +1231,6 @@ section{
    border:var(--border2);
    padding:2rem;
    max-width: 50rem;
-   margin:0 auto;
    text-align: center;
 }
 

@@ -18,14 +18,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.DB_Conn;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * Servlet implementation class Add_to_cart
  */
-public class Add_to_cart extends HttpServlet {
+public class AddToCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
+        private static final String MESSAGE_ATTRIBUTE = "message";
+        private static final Logger logger = LoggerFactory.getLogger(AddToCart.class);
+     /**
      * @see HttpServlet#HttpServlet()
      */
     public Add_to_cart() {
@@ -45,18 +47,20 @@ public class Add_to_cart extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-		
-		PrintWriter out = response.getWriter();
+    	// TODO Auto-generated method stub
+    	doGet(request, response);
+    	// Removed unused PrintWriter declaration
+	}
  		
-		String book_title = (String) request.getParameter("book_title"),
-				book_price= (String) request.getParameter("book_price"),book_imgFileName= (String) request.getParameter("book_imgFileName");
+		String bookTitle = (String) request.getParameter("book_title"),
+       		       bookPrice = (String) request.getParameter("book_price"),
+       		       bookImgFileName = (String) request.getParameter("book_imgFileName");
 		
 		
-		String sql = "select * from cart where book_title=? and user_email=?";
-		
-		System.out.println(request.getSession().getAttribute("user"));
+		String sql = "SELECT book_title, user_email, price, imageFileName FROM cart WHERE book_title=? AND user_email=?";
+
+		logger.debug("User session: {}", request.getSession().getAttribute("user"));
+
 		if(request.getSession().getAttribute("user")!=null) {
 			HttpSession session = request.getSession();
 			User user = (User)session.getAttribute("user");

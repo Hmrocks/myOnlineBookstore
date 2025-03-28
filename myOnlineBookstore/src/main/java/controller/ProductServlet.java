@@ -131,11 +131,13 @@ System.out.println(request.getParameter(request.getParameter("delete")));
 			System.out.println("Selected uploadpath: "+uploadPath);
 			try {
 				
-				FileOutputStream fileOutputstream = new FileOutputStream(uploadPath);
-				InputStream inputStream = file.getInputStream();
+				FileOutputStream fileOutputStream = new FileOutputStream(uploadPath);
+     				InputStream inputStream = file.getInputStream()) {
+    				inputStream.transferTo(fileOutputStream);  // Built-in method
+    
+				} catch (IOException e) {	 // Handle exception properly
+				}
 				
-				byte[] b = new byte[inputStream.available()];
-				inputStream.read(b);
 				fileOutputstream.write(b);
 				fileOutputstream.close();
 				} catch(Exception ex) {

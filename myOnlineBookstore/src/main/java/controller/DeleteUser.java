@@ -18,6 +18,7 @@ import database.DB_Conn;
  */
 public class DeleteUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String DELETE_PARAMETER = "delete";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -32,8 +33,8 @@ public class DeleteUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if(request.getParameter("delete")!=null){
-			  String delete_id =  request.getParameter("delete");
+		if(request.getParameter(DELETE_PARAMETER)!=null){
+			  String delete_id =  request.getParameter(DELETE_PARAMETER);
 			  String sql ="DELETE FROM `users` WHERE id ='"+delete_id+"'";
 			   try(			  
 			    		Connection connection = new DB_Conn().getConnection();
@@ -59,8 +60,8 @@ public class DeleteUser extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
-		if(request.getParameter("delete")!=null){
-			  String delete_id =  request.getParameter("delete");
+		if(request.getParameter(DELETE_PARAMETER)!=null){
+			  String delete_id =  request.getParameter(DELETE_PARAMETER);
 			  String sql ="DELETE FROM `users` WHERE id ='"+delete_id+"'";
 			   try(			  
 			    		Connection connection = new DB_Conn().getConnection();

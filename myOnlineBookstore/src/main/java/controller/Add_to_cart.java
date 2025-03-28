@@ -24,7 +24,7 @@ import database.DB_Conn;
  */
 public class Add_to_cart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+        private static final String MESSAGE_ATTRIBUTE = "message";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -73,7 +73,7 @@ public class Add_to_cart extends HttpServlet {
 				  
 				  if(rs.next()) {
 					  String message = "You already have this item in your cart!";
-					  request.setAttribute("message", message);
+					  request.setAttribute(MESSAGE_ATTRIBUTE, message);
 		              RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
 		              rd.forward(request, response);
 				  }else {
@@ -87,7 +87,7 @@ public class Add_to_cart extends HttpServlet {
 					  System.out.println(pstatement2);
 					  int result = pstatement2.executeUpdate();
 					  String message = "Book succesfully added to cart!";
-					  request.setAttribute("message", message);
+					  request.setAttribute(MESSAGE_ATTRIBUTE, message);
 					  request.getRequestDispatcher("AllBooks.jsp").forward(request,response);
 				  }
 			      
@@ -98,7 +98,7 @@ public class Add_to_cart extends HttpServlet {
 			  
 		}else {
 			String message = "Please login first!";
-			  request.setAttribute("message", message);
+			  request.setAttribute(MESSAGE_ATTRIBUTE, message);
             RequestDispatcher rd =request.getRequestDispatcher("index.jsp");
             rd.forward(request, response);
 		}

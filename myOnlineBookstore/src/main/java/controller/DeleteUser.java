@@ -11,73 +11,60 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+// Add logger imports
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import database.DB_Conn;
 
-/**
- * Servlet implementation class DeleteUser
- */
+@WebServlet("/DeleteUser")
 public class DeleteUser extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    private static final long serialVersionUID = 1L;
+    private static final String DELETE_PARAM = "delete"; // Constant for parameter name
+    private static final String MESSAGE_ATTR = "message"; // Constant for message attribute
+    private static final Logger logger = LoggerFactory.getLogger(DeleteUser.class);
+
     public DeleteUser() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if(request.getParameter("delete")!=null){
-			  String delete_id =  request.getParameter("delete");
-			  String sql ="DELETE FROM `users` WHERE id ='"+delete_id+"'";
-			   try(			  
-			    		Connection connection = new DB_Conn().getConnection();
-						PreparedStatement pstatement = connection.prepareStatement(sql);){
-	    		    
-	    		   System.out.println(pstatement);
-					  int rs = pstatement.executeUpdate();
-					  
-					  String message = "user has succesfully been deleted!";
-					  request.setAttribute("message", message);
-		              RequestDispatcher rd =request.getRequestDispatcher("admin_users.jsp");
-		              rd.forward(request, response);
-	    	   } catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		  }
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        handleDeleteRequest(request, response);
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-		if(request.getParameter("delete")!=null){
-			  String delete_id =  request.getParameter("delete");
-			  String sql ="DELETE FROM `users` WHERE id ='"+delete_id+"'";
-			   try(			  
-			    		Connection connection = new DB_Conn().getConnection();
-						PreparedStatement pstatement = connection.prepareStatement(sql);){
-	    		    
-	    		   System.out.println(pstatement);
-					  int rs = pstatement.executeUpdate();
-					  
-					  String message = "user has succesfully been deleted!";
-					  request.setAttribute("message", message);
-		              RequestDispatcher rd =request.getRequestDispatcher("admin_users.jsp");
-		              rd.forward(request, response);
-	    	   } catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		  }
-	}
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        handleDeleteRequest(request, response);
+    }
 
+    private void handleDeleteRequest(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        if(request.getParameter(DELETE_PARAM) != null) {
+            String deleteId = request.getParameter(DELETE_PARAM); // Renamed variable
+            String sql = "DELETE FROM users WHERE id = ?"; // Parameterized query
+            
+            try (Connection connection = new DB_Conn().getConnection();
+                 PreparedStatement pstatement = connection.prepareStatement(sql)) {
+                
+                pstatement.setString(1, deleteId);
+                logger.debug("Delete statement: {}", pstatement); // Replaced System.out
+                
+                pstatement.executeUpdate(); // Removed unused result variable
+                
+                String message = "User has been successfully deleted!";
+                request.setAttribute(MESSAGE_ATTR, message);
+                RequestDispatcher rd = request.getRequestDispatcher("admin_users.jsp");
+                rd.forward(request, response);
+                
+            } catch (ClassNotFoundException | SQLException e) {
+                logger.error("Database error during deletion", e);
+                request.setAttribute(MESSAGE_ATTR, "Error deleting user: " + e.getMessage());
+                RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+                rd.forward(request, response);
+            }
+        }
+    }
 }

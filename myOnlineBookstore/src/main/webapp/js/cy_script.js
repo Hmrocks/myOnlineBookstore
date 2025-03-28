@@ -41,8 +41,7 @@ window.onload = () =>{
 function fadeOut(){
   setTimeout(loader, 4000);
 }
-
-var swiper = new Swiper(".books-slider", {
+const swiper = new Swiper(".books-slider", { // Changed var -> const
   loop:true,
   centeredSlides: true,
   autoplay: {
@@ -62,7 +61,7 @@ var swiper = new Swiper(".books-slider", {
   },
 });
 
-var swiper = new Swiper(".featured-slider", {
+const featuredSwiper = new Swiper(".featured-slider", {
   spaceBetween: 10,
   loop:true,
   centeredSlides: true,
@@ -90,7 +89,7 @@ var swiper = new Swiper(".featured-slider", {
   },
 });
 
-var swiper = new Swiper(".arrivals-slider", {
+const arrivalSwiper = new Swiper(".arrivals-slider", {
   spaceBetween: 10,
   loop:true,
   centeredSlides: true,
@@ -111,7 +110,7 @@ var swiper = new Swiper(".arrivals-slider", {
   },
 });
 
-var swiper = new Swiper(".reviews-slider", {
+const reviewsSwiper = new Swiper(".reviews-slider", {
   spaceBetween: 10,
   grabCursor:true,
   loop:true,
@@ -133,7 +132,7 @@ var swiper = new Swiper(".reviews-slider", {
   },
 });
 
-var swiper = new Swiper(".blogs-slider", {
+const blogsSwiper = new Swiper(".blogs-slider", {
   spaceBetween: 10,
   grabCursor:true,
   loop:true,
@@ -188,7 +187,7 @@ const setSuccess = element => {
 };
 
 const isValidEmail = email => {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
   return re.test(String(email).toLowerCase());
 }
 
